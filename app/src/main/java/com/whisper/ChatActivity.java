@@ -20,12 +20,6 @@ import lib.client;
 public class ChatActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    TextInputEditText inputEditText;
-    Button inputButton;
-
-    String text_string;
-
-    client client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,20 +46,6 @@ public class ChatActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        client = new client();
-
-        inputEditText = (TextInputEditText)findViewById(R.id.edittext);
-        inputButton = (Button)findViewById(R.id.input_btn);
-        inputButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                text_string = inputEditText.getText().toString();
-                client.TcpIpClient(text_string);
-                inputEditText.setText("");
-            }
-        });
-
     }
 
     @Override
