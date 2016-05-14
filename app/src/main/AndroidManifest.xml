@@ -18,6 +18,15 @@
         <activity
             android:name=".ChatActivity"
             android:label="@string/title_activity_chat"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".SettingProfileActivtiy"
+            android:label="@string/title_activity_setting_profile_activtiy"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SettingActivity"
+            android:label="@string/title_activity_setting"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
