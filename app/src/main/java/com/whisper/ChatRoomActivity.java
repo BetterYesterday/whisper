@@ -3,7 +3,7 @@ package com.whisper;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputEditText;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,18 +14,40 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import lib.Socketlib;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 
-public class ChatActivity extends AppCompatActivity
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URISyntaxException;
+
+import lib.ChatApplication;
+
+public class ChatRoomActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    TextView textView;
+    Button button;
+    EditText editText;
+
+    Socket socket;
+
+    private Boolean isConnected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat_room);
 
-        setContentView(R.layout.activity_chat);
+        ChatApplication chatapp = new ChatApplication();
+        socket = chatapp.getSocket();
+        socket.connect();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -46,7 +68,54 @@ public class ChatActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        textView = (TextView) findViewById(R.id.textview);
+        editText = (EditText) findViewById(R.id.edittext);
+        button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                socket.emit("fromclient",editText.getText().toString());
+                editText.setText("");
+            }
+        });
+        socket.on(Socket.EVENT_CONNECT, onConnection);
+        socket.on("toclient", onNewmessage);
     }
+
+    private Emitter.Listener onConnection = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    isConnected = true;
+                    Log.d("connection", "연결됨");
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener onNewmessage = new Emitter.Listener(){
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    String message;
+                    try {
+                        message = data.getString("msg");
+                    } catch (JSONException e) {
+                        return;
+                    }
+                    textView.append("\n");
+                    textView.append(message);
+                    Log.d("lala","메시지 도착");
+                }
+            });
+        }
+    };
 
     @Override
     public void onBackPressed() {
@@ -61,7 +130,7 @@ public class ChatActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.chat, menu);
+        getMenuInflater().inflate(R.menu.chat_room, menu);
         return true;
     }
 
@@ -85,20 +154,6 @@ public class ChatActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
