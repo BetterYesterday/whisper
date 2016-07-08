@@ -18,13 +18,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.net.URISyntaxException;
 
 import lib.ChatApplication;
 
@@ -75,12 +72,13 @@ public class ChatRoomActivity extends AppCompatActivity
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                socket.emit("fromclient",editText.getText().toString());
+                socket.emit("receive_message",editText.getText().toString());
                 editText.setText("");
             }
         });
+
         socket.on(Socket.EVENT_CONNECT, onConnection);
-        socket.on("toclient", onNewmessage);
+        socket.on("new_message", onNewmessage);
     }
 
     private Emitter.Listener onConnection = new Emitter.Listener() {
@@ -105,7 +103,7 @@ public class ChatRoomActivity extends AppCompatActivity
                     JSONObject data = (JSONObject) args[0];
                     String message;
                     try {
-                        message = data.getString("msg");
+                        message = data.getString("message");
                     } catch (JSONException e) {
                         return;
                     }
@@ -114,6 +112,12 @@ public class ChatRoomActivity extends AppCompatActivity
                     Log.d("lala","메시지 도착");
                 }
             });
+        }
+    };
+    private Emitter.Listener onLoginUser = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+
         }
     };
 

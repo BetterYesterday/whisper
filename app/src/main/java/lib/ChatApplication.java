@@ -13,7 +13,7 @@ public class ChatApplication {
     private Socket mSocket;
     {
         try {
-            mSocket = IO.socket("http://foo.mooncp.net:20800");
+            mSocket = IO.socket("http://foo.mooncp.net:20900");
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
