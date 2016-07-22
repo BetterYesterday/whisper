@@ -81,7 +81,7 @@ public class ChatRoomActivity extends AppCompatActivity
         socket.on("new_message", onNewmessage);
     }
 
-    private Emitter.Listener onConnection = new Emitter.Listener() {
+        private Emitter.Listener onConnection = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             runOnUiThread(new Runnable() {
@@ -109,7 +109,7 @@ public class ChatRoomActivity extends AppCompatActivity
                     }
                     textView.append("\n");
                     textView.append(message);
-                    Log.d("lala","메시지 도착");
+                    Log.d("larla","메시지 도착");
                 }
             });
         }
