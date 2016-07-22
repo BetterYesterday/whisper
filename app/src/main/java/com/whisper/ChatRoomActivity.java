@@ -42,7 +42,7 @@ public class ChatRoomActivity extends AppCompatActivity
         setContentView(R.layout.activity_chat_room);
 
         ChatApplication chatapp = new ChatApplication();
-        socket = chatapp.getSocket();
+        socket = chatapp.getMainSocket();
         socket.connect();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
