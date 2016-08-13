@@ -23,6 +23,7 @@
             android:id="@+id/input_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:hint="email"
             android:layout_marginBottom="16dp"/>
         <android.support.design.widget.TextInputEditText
@@ -30,6 +31,7 @@
             android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:hint="password"/>
         <Button
             android:id="@+id/signin_btn"
