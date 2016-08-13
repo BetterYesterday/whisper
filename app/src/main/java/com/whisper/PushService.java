@@ -104,19 +104,24 @@ public class PushService extends Service {
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
-            String message, messageTime;
+            String message;
+            Boolean iSend;
             int roomNum;
             JSONObject data = (JSONObject) args[0];
             try{
                 message = data.getString("new_message");
                 roomNum = data.getInt("room_num");
-                messageTime = data.getString("message_time");
+                iSend = data.getBoolean("Isend");
             }catch (JSONException e){
                 return;
             }
             try {
-                sqLiteDatabase.execSQL("create table " + roomNum + " (my_message TEXT, other_message TEXT, time TEXT);");
-                sqLiteDatabase.execSQL("insert into " + roomNum + " values (null," + message +"," + messageTime + ");");
+                sqLiteDatabase.execSQL("create table " + roomNum + " (my_message TEXT, other_message TEXT, time TEXT)");
+                if(!iSend){
+                    sqLiteDatabase.execSQL("insert into " + roomNum + " values (null," + message +", null)");
+                }else{
+                    sqLiteDatabase.execSQL("insert into " + roomNum + " values ("+ message +" , null, null)");
+                }
             }catch (SQLiteException e){
                 return;
             }

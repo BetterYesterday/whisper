@@ -67,6 +67,7 @@ public class StartChatActivity extends Activity {
         socket.on(Socket.EVENT_CONNECT_ERROR,onConnectError);
         socket.on(Socket.EVENT_CONNECT_TIMEOUT,onConnectError);
         socket.on("chat_message",onGetRoomStatus);
+        socket.on(chatapp.getUserEmail(),onGetRoomNum);
 
         input_message = (TextInputEditText) findViewById(R.id.input_message);
 
@@ -182,7 +183,7 @@ public class StartChatActivity extends Activity {
                     }catch (JSONException e){
                         return;
                     }
-                    sqLiteDatabase.rawQuery("insert",);
+
                 }
             });
         }
