@@ -152,6 +152,7 @@ public class StartChatActivity extends Activity {
                 String isConnectRoom;
                 @Override
                 public void run() {
+                    Log.d("startchat_tag","on");
                     JSONObject data = (JSONObject) args[0];
                     try {
                         isConnectRoom = data.getString("roomstatus");
@@ -200,6 +201,7 @@ public class StartChatActivity extends Activity {
             } catch (JSONException e) {
                 return;
             }
+            Log.d("startchat_tag","emit");
             socket.emit("sign_in", signInData);
         }
     }
@@ -212,6 +214,7 @@ public class StartChatActivity extends Activity {
         }catch (JSONException e){
             return;
         }
+        Log.d("startchat_tag","emit");
         socket.emit("room_change",chatData);
     }
 

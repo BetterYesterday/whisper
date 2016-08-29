@@ -62,14 +62,9 @@ public class ChatRoomListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position) ;
     }
 
-    public int getRoomNum(int position) {
-        return listViewItem.getRoomnum();
-    }
-
     public void addItem(int roomnum, String message, String desc) {
         ChatRoomListViewItem item = new ChatRoomListViewItem();
 
-        item.setRoomnum(roomnum);
         item.setNewMessage(message);
         item.setDesc(desc);
 

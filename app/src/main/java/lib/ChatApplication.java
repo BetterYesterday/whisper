@@ -1,5 +1,7 @@
 package lib;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
